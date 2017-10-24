@@ -5,7 +5,7 @@ namespace AlgoliaSearch\Tests;
 use AlgoliaSearch\AlgoliaException;
 use AlgoliaSearch\Client;
 use AlgoliaSearch\Index;
-use AlgoliaSearch\SynonymBrowser;
+use AlgoliaSearch\Iterators\SynonymIterator;
 
 class SynonymsExportTest extends AlgoliaSearchTestCase
 {
@@ -45,10 +45,10 @@ class SynonymsExportTest extends AlgoliaSearchTestCase
      */
     public function testShouldRejectInvalidHitsPerPage()
     {
-        new SynonymBrowser($this->index, 0);
+        new SynonymIterator($this->index, 0);
     }
 
-    public function testCanGetCurrentSynonymOfNewBrowser()
+    public function testCanGetCurrentSynonymOfNewIterator()
     {
         $res = $this->index->saveSynonym('city',
             array(
@@ -58,7 +58,8 @@ class SynonymsExportTest extends AlgoliaSearchTestCase
         );
         $this->index->waitTask($res['taskID'], 0.1);
 
-        $synonym = $this->index->initSynonymBrowser()->current();
+
+        $synonym = $this->index->initSynonymIterator()->current();
         $this->assertEquals(array(
             'objectID' => 'city',
             'type'     => 'synonym',
@@ -72,11 +73,10 @@ class SynonymsExportTest extends AlgoliaSearchTestCase
         $this->index->waitTask($res['taskID'], 0.1);
 
         $exported = array();
-
-        $browser = $this->index->initSynonymBrowser(2);
+        $iterator = $this->index->initSynonymIterator(2);
 
         $i = 0;
-        foreach ($browser as $key => $synonym) {
+        foreach ($iterator as $key => $synonym) {
             $this->assertArrayNotHasKey('_highlightResult', $synonym);
             $this->assertEquals($i++, $key);
 
@@ -91,10 +91,11 @@ class SynonymsExportTest extends AlgoliaSearchTestCase
         $res = $this->index->batchSynonyms($this->getFakeSynonyms());
         $this->index->waitTask($res['taskID'], 0.1);
 
-        $browser = $this->index->initSynonymBrowser();
+
+        $iterator = $this->index->initSynonymIterator();
 
         $synonyms = array();
-        foreach ($browser as $key => $synonym) {
+        foreach ($iterator as $key => $synonym) {
             $synonyms[] = $synonym;
         }
 
