@@ -10,6 +10,10 @@ return PhpCsFixer\Config::create()
     ->setRules([
         '@Symfony' => true,
         'array_syntax' => ['syntax' => 'long'],
+        'trailing_comma_in_multiline_array' => false,
+        'binary_operator_spaces' => ['align_double_arrow' => true],
+        'concat_space' => ['spacing' => 'one'],
+        'yoda_style' => ['equal' => false, 'identical' => false],
     ])
-    ->finder($finder)
+    ->setFinder($finder)
 ;
