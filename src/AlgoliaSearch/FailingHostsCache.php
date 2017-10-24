@@ -1,4 +1,5 @@
 <?php
+
 namespace AlgoliaSearch;
 
 interface FailingHostsCache

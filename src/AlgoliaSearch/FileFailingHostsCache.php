@@ -25,9 +25,8 @@ class FileFailingHostsCache implements FailingHostsCache
     private $ttl;
 
     /**
-     * @param int|null    $ttl The time to live of the cache in seconds.
+     * @param int|null    $ttl  the time to live of the cache in seconds
      * @param string|null $file
-     *
      */
     public function __construct($ttl = null, $file = null)
     {
@@ -61,20 +60,20 @@ class FileFailingHostsCache implements FailingHostsCache
     {
         $fileDirectory = dirname($file);
 
-        if (! is_writable($fileDirectory)) {
+        if (!is_writable($fileDirectory)) {
             throw new \RuntimeException(sprintf('Cache file directory "%s" is not writable.', $fileDirectory));
         }
 
-        if (! file_exists($file)) {
+        if (!file_exists($file)) {
             // The dir being writable, the file will be created when needed.
             return;
         }
 
-        if (! is_readable($file)) {
+        if (!is_readable($file)) {
             throw new \RuntimeException(sprintf('Cache file "%s" is not readable.', $file));
         }
 
-        if (! is_writable($file)) {
+        if (!is_writable($file)) {
             throw new \RuntimeException(sprintf('Cache file "%s" is not writable.', $file));
         }
     }
@@ -136,7 +135,7 @@ class FileFailingHostsCache implements FailingHostsCache
      */
     private function loadFailingHostsCacheFromDisk()
     {
-        if (! file_exists($this->failingHostsCacheFile)) {
+        if (!file_exists($this->failingHostsCacheFile)) {
             return array();
         }
 

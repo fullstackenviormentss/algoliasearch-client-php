@@ -83,9 +83,9 @@ class PlacesIndex
      *
      * @throws AlgoliaException
      */
-     public function getObject($objectID)
-     {
-         return $this->client->request(
+    public function getObject($objectID)
+    {
+        return $this->client->request(
              $this->context,
              'GET',
              '/1/places/' . urlencode($objectID),
@@ -95,7 +95,7 @@ class PlacesIndex
              $this->context->connectTimeout,
              $this->context->searchTimeout
          );
-     }
+    }
 
     /**
      * @param string $key

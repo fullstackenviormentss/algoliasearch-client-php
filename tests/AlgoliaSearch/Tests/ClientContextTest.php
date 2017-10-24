@@ -23,7 +23,7 @@ class ClientContextTest extends \PHPUnit_Framework_TestCase
 
         // Here we check that different calls results in the hosts being in and different order.
         $isRandom = false;
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 100; ++$i) {
             $otherContext = new ClientContext('whatever', 'whatever', null);
             if ($hosts !== $otherContext->readHostsArray) {
                 $isRandom = true;
@@ -54,7 +54,7 @@ class ClientContextTest extends \PHPUnit_Framework_TestCase
 
         // Here we check that different calls results in the hosts being in and different order.
         $isRandom = false;
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 100; ++$i) {
             $otherContext = new ClientContext('whatever', 'whatever', null);
             if ($hosts !== $otherContext->readHostsArray) {
                 $isRandom = true;
@@ -85,7 +85,7 @@ class ClientContextTest extends \PHPUnit_Framework_TestCase
 
         // Here we check that different calls results in the hosts being in and different order.
         $isRandom = false;
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 100; ++$i) {
             $otherContext = new ClientContext('whatever', 'whatever', null);
             if ($hosts !== $otherContext->writeHostsArray) {
                 $isRandom = true;

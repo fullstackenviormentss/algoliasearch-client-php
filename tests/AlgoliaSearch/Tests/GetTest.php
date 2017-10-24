@@ -38,7 +38,7 @@ class GetTest extends AlgoliaSearchTestCase
     {
         $res = $this->index->addObject(array(
             'firstname' => 'Robin',
-            'lastname' => 'Lee'), 'à/go/?à');
+            'lastname'  => 'Lee'), 'à/go/?à');
         $this->index->waitTask($res['taskID']);
 
         $results = $this->index->search('');

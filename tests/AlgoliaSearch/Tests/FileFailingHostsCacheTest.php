@@ -67,7 +67,7 @@ class FileFailingHostsCacheTest extends FailingHostsCacheTestCase
     public function testThatDefaultTtlIs5Minutes()
     {
         $cache = new FileFailingHostsCache();
-        $this->assertEquals(60*5, $cache->getTtl());
+        $this->assertEquals(60 * 5, $cache->getTtl());
     }
 
     public function testThatTtlCanBeOverridden()

@@ -133,7 +133,7 @@ class Index
             return $this->client->request(
                 $this->context,
                 'POST',
-                '/1/indexes/'.$this->urlIndexName,
+                '/1/indexes/' . $this->urlIndexName,
                 array(),
                 $content,
                 $this->context->writeHostsArray,
@@ -145,7 +145,7 @@ class Index
         return $this->client->request(
             $this->context,
             'PUT',
-            '/1/indexes/'.$this->urlIndexName.'/'.urlencode($objectID),
+            '/1/indexes/' . $this->urlIndexName . '/' . urlencode($objectID),
             array(),
             $content,
             $this->context->writeHostsArray,
@@ -172,8 +172,8 @@ class Index
     /**
      * Get an object from this index.
      *
-     * @param string    $objectID             the unique identifier of the object to retrieve
-     * @param string[]  $attributesToRetrieve (optional) if set, contains the list of attributes to retrieve
+     * @param string   $objectID             the unique identifier of the object to retrieve
+     * @param string[] $attributesToRetrieve (optional) if set, contains the list of attributes to retrieve
      *
      * @return mixed
      */
@@ -184,7 +184,7 @@ class Index
             return $this->client->request(
                 $this->context,
                 'GET',
-                '/1/indexes/'.$this->urlIndexName.'/'.$id,
+                '/1/indexes/' . $this->urlIndexName . '/' . $id,
                 null,
                 null,
                 $this->context->readHostsArray,
@@ -200,7 +200,7 @@ class Index
         return $this->client->request(
             $this->context,
             'GET',
-            '/1/indexes/'.$this->urlIndexName.'/'.$id,
+            '/1/indexes/' . $this->urlIndexName . '/' . $id,
             array('attributes' => $attributesToRetrieve),
             null,
             $this->context->readHostsArray,
@@ -270,7 +270,7 @@ class Index
         return $this->client->request(
             $this->context,
             'POST',
-            '/1/indexes/'.$this->urlIndexName.'/'.urlencode($partialObject['objectID']).'/partial'.$queryString,
+            '/1/indexes/' . $this->urlIndexName . '/' . urlencode($partialObject['objectID']) . '/partial' . $queryString,
             array(),
             $partialObject,
             $this->context->writeHostsArray,
@@ -313,7 +313,7 @@ class Index
         return $this->client->request(
             $this->context,
             'PUT',
-            '/1/indexes/'.$this->urlIndexName.'/'.urlencode($object[$objectIDKey]),
+            '/1/indexes/' . $this->urlIndexName . '/' . urlencode($object[$objectIDKey]),
             array(),
             $object,
             $this->context->writeHostsArray,
@@ -356,7 +356,7 @@ class Index
         return $this->client->request(
             $this->context,
             'DELETE',
-            '/1/indexes/'.$this->urlIndexName.'/'.urlencode($objectID),
+            '/1/indexes/' . $this->urlIndexName . '/' . urlencode($objectID),
             null,
             null,
             $this->context->writeHostsArray,
@@ -388,7 +388,7 @@ class Index
         return $this->client->request(
             $this->context,
             'POST',
-            '/1/indexes/'.$this->urlIndexName.'/deleteByQuery',
+            '/1/indexes/' . $this->urlIndexName . '/deleteByQuery',
             null,
             array('params' => $this->client->buildQuery($args)),
             $this->context->writeHostsArray,
@@ -426,7 +426,7 @@ class Index
             }
             $res = $this->deleteObjects($objectIDs);
             $deletedCount += count($objectIDs);
-            if ($results['nbHits'] < $args['hitsPerPage'] && false === $waitLastCall) {
+            if ($results['nbHits'] < $args['hitsPerPage'] && $waitLastCall === false) {
                 break;
             }
             $this->waitTask($res['taskID']);
@@ -440,7 +440,7 @@ class Index
      * Search inside the index.
      *
      * @param string $query the full text query
-     * @param mixed $args (optional) if set, contains an associative array with query parameters:
+     * @param mixed  $args  (optional) if set, contains an associative array with query parameters:
      *                      - page: (integer) Pagination parameter used to select the page to retrieve.
      *                      Page is zero-based and defaults to 0. Thus, to retrieve the 10th page you need to set page=9
      *                      - hitsPerPage: (integer) Pagination parameter used to select the number of hits per page.
@@ -516,7 +516,9 @@ class Index
      *                      duplicate value for the attributeForDistinct attribute are removed from results. For example,
      *                      if the chosen attribute is show_name and several hits have the same value for show_name, then
      *                      only the best one is kept and others are removed.
+     *
      * @return mixed
+     *
      * @throws AlgoliaException
      */
     public function search($query, $args = null)
@@ -533,7 +535,7 @@ class Index
         return $this->client->request(
             $this->context,
             'POST',
-            '/1/indexes/'.$this->urlIndexName.'/query',
+            '/1/indexes/' . $this->urlIndexName . '/query',
             array(),
             array('params' => $this->client->buildQuery($args)),
             $this->context->readHostsArray,
@@ -545,12 +547,14 @@ class Index
     /**
      * @param $query
      * @param $args
+     *
      * @return mixed
+     *
      * @throws AlgoliaException
      */
     private function searchWithDisjunctiveFaceting($query, $args)
     {
-        if (! is_array($args['disjunctiveFacets']) || count($args['disjunctiveFacets']) <= 0) {
+        if (!is_array($args['disjunctiveFacets']) || count($args['disjunctiveFacets']) <= 0) {
             throw new \InvalidArgumentException('disjunctiveFacets needs to be an non empty array');
         }
 
@@ -559,7 +563,7 @@ class Index
         }
 
         /**
-         * Prepare queries
+         * Prepare queries.
          */
         // Get the list of disjunctive queries to do: 1 per disjunctive facet
         $disjunctiveQueries = $this->getDisjunctiveQueries($args);
@@ -585,20 +589,20 @@ class Index
         array_unshift($disjunctiveQueries, $args);
 
         /**
-         * Do all queries in one call
+         * Do all queries in one call.
          */
         $results = $this->client->multipleQueries(array_values($disjunctiveQueries));
         $results = $results['results'];
 
         /**
-         * Merge facets from disjunctive queries with facets from the hits query
+         * Merge facets from disjunctive queries with facets from the hits query.
          */
 
         // The first query is the hits query that the one we'll return to the user
         $queryResults = array_shift($results);
 
         // To be able to add facets from disjunctive query we create 'facets' key in case we only have disjunctive facets
-        if (false === isset($queryResults['facets'])) {
+        if (isset($queryResults['facets']) === false) {
             $queryResults['facets'] = array();
         }
 
@@ -615,6 +619,7 @@ class Index
 
     /**
      * @param $queryParams
+     *
      * @return array
      */
     private function getDisjunctiveQueries($queryParams)
@@ -624,16 +629,16 @@ class Index
         foreach ($queryParams['disjunctiveFacets'] as $facetName) {
             $params = $queryParams;
             $params['facets'] = array($facetName);
-            $facetFilters = isset($params['facetFilters']) ? $params['facetFilters']: array();
-            $numericFilters = isset($params['numericFilters']) ? $params['numericFilters']: array();
+            $facetFilters = isset($params['facetFilters']) ? $params['facetFilters'] : array();
+            $numericFilters = isset($params['numericFilters']) ? $params['numericFilters'] : array();
 
             $additionalParams = array(
-                'hitsPerPage' => 1,
-                'page' => 0,
-                'attributesToRetrieve' => array(),
+                'hitsPerPage'           => 1,
+                'page'                  => 0,
+                'attributesToRetrieve'  => array(),
                 'attributesToHighlight' => array(),
-                'attributesToSnippet' => array(),
-                'analytics' => false
+                'attributesToSnippet'   => array(),
+                'analytics'             => false
             );
 
             $additionalParams['facetFilters'] = $this->getAlgoliaFiltersArrayWithoutCurrentRefinement($facetFilters, $facetName . ':');
@@ -648,18 +653,19 @@ class Index
     /**
      * @param $filters
      * @param $needle
+     *
      * @return array
      */
     private function getAlgoliaFiltersArrayWithoutCurrentRefinement($filters, $needle)
     {
         // iterate on each filters which can be string or array and filter out every refinement matching the needle
-        for ($i = 0; $i < count($filters); $i++) {
+        for ($i = 0; $i < count($filters); ++$i) {
             if (is_array($filters[$i])) {
                 foreach ($filters[$i] as $filter) {
                     if (mb_substr($filter, 0, mb_strlen($needle)) === $needle) {
                         unset($filters[$i]);
                         $filters = array_values($filters);
-                        $i--;
+                        --$i;
                         break;
                     }
                 }
@@ -667,7 +673,7 @@ class Index
                 if (mb_substr($filters[$i], 0, mb_strlen($needle)) === $needle) {
                     unset($filters[$i]);
                     $filters = array_values($filters);
-                    $i--;
+                    --$i;
                 }
             }
         }
@@ -691,7 +697,7 @@ class Index
         return $this->client->request(
             $this->context,
             'POST',
-            '/1/indexes/'.$this->urlIndexName.'/facets/'.$facetName.'/query',
+            '/1/indexes/' . $this->urlIndexName . '/facets/' . $facetName . '/query',
             array(),
             array('params' => $this->client->buildQuery($query)),
             $this->context->readHostsArray,
@@ -713,6 +719,7 @@ class Index
      *
      * @throws AlgoliaException
      * @throws \Exception
+     *
      * @deprecated you should use $index->search($query, ['disjunctiveFacets' => $disjunctive_facets]]); instead
      */
     public function searchDisjunctiveFaceting($query, $disjunctive_facets, $params = array(), $refinements = array())
@@ -741,7 +748,7 @@ class Index
         foreach ($refinements as $key => $value) {
             $r = array_map(
                 function ($val) use ($key) {
-                    return $key.':'.$val;
+                    return $key . ':' . $val;
                 },
                 $value
             );
@@ -762,7 +769,7 @@ class Index
                 if ($key != $disjunctive_facet) {
                     $r = array_map(
                         function ($val) use ($key) {
-                            return $key.':'.$val;
+                            return $key . ':' . $val;
                         },
                         $value
                     );
@@ -790,7 +797,7 @@ class Index
 
         $aggregated_answer = $answers['results'][0];
         $aggregated_answer['disjunctiveFacets'] = array();
-        for ($i = 1; $i < count($answers['results']); $i++) {
+        for ($i = 1; $i < count($answers['results']); ++$i) {
             foreach ($answers['results'][$i]['facets'] as $key => $facet) {
                 $aggregated_answer['disjunctiveFacets'][$key] = $facet;
                 if (!in_array($key, $disjunctive_refinements)) {
@@ -823,7 +830,7 @@ class Index
         return $this->client->request(
             $this->context,
             'GET',
-            '/1/indexes/'.$this->urlIndexName.'/browse',
+            '/1/indexes/' . $this->urlIndexName . '/browse',
             array('page' => $page, 'hitsPerPage' => $hitsPerPage),
             null,
             $this->context->readHostsArray,
@@ -865,7 +872,7 @@ class Index
         return $this->client->request(
             $this->context,
             'GET',
-            '/1/indexes/'.$this->urlIndexName.'/task/'.$taskID,
+            '/1/indexes/' . $this->urlIndexName . '/task/' . $taskID,
             null,
             null,
             $this->context->readHostsArray,
@@ -886,7 +893,7 @@ class Index
         return $this->client->request(
             $this->context,
             'GET',
-            '/1/indexes/'.$this->urlIndexName.'/settings?getVersion=2',
+            '/1/indexes/' . $this->urlIndexName . '/settings?getVersion=2',
             null,
             null,
             $this->context->readHostsArray,
@@ -907,7 +914,7 @@ class Index
         return $this->client->request(
             $this->context,
             'POST',
-            '/1/indexes/'.$this->urlIndexName.'/clear',
+            '/1/indexes/' . $this->urlIndexName . '/clear',
             null,
             null,
             $this->context->writeHostsArray,
@@ -987,10 +994,10 @@ class Index
      */
     public function setSettings($settings, $forwardToReplicas = false)
     {
-        $url = '/1/indexes/'.$this->urlIndexName.'/settings';
+        $url = '/1/indexes/' . $this->urlIndexName . '/settings';
 
         if ($forwardToReplicas) {
-            $url = $url.'?forwardToReplicas=true';
+            $url = $url . '?forwardToReplicas=true';
         }
 
         return $this->client->request(
@@ -1017,7 +1024,7 @@ class Index
         return $this->client->request(
             $this->context,
             'GET',
-            '/1/indexes/'.$this->urlIndexName.'/keys',
+            '/1/indexes/' . $this->urlIndexName . '/keys',
             null,
             null,
             $this->context->readHostsArray,
@@ -1028,6 +1035,7 @@ class Index
 
     /**
      * @deprecated use listApiKeys instead
+     *
      * @return mixed
      */
     public function listUserKeys()
@@ -1037,7 +1045,9 @@ class Index
 
     /**
      * @deprecated use getApiKey in
+     *
      * @param $key
+     *
      * @return mixed
      */
     public function getUserKeyACL($key)
@@ -1059,7 +1069,7 @@ class Index
         return $this->client->request(
             $this->context,
             'GET',
-            '/1/indexes/'.$this->urlIndexName.'/keys/'.$key,
+            '/1/indexes/' . $this->urlIndexName . '/keys/' . $key,
             null,
             null,
             $this->context->readHostsArray,
@@ -1067,7 +1077,6 @@ class Index
             $this->context->readTimeout
         );
     }
-
 
     /**
      * Delete an existing API key associated to this index.
@@ -1083,7 +1092,7 @@ class Index
         return $this->client->request(
             $this->context,
             'DELETE',
-            '/1/indexes/'.$this->urlIndexName.'/keys/'.$key,
+            '/1/indexes/' . $this->urlIndexName . '/keys/' . $key,
             null,
             null,
             $this->context->writeHostsArray,
@@ -1094,7 +1103,9 @@ class Index
 
     /**
      * @param $key
+     *
      * @return mixed
+     *
      * @deprecated use deleteApiKey instead
      */
     public function deleteUserKey($key)
@@ -1155,7 +1166,7 @@ class Index
         return $this->client->request(
             $this->context,
             'POST',
-            '/1/indexes/'.$this->urlIndexName.'/keys',
+            '/1/indexes/' . $this->urlIndexName . '/keys',
             array(),
             $params,
             $this->context->writeHostsArray,
@@ -1169,14 +1180,15 @@ class Index
      * @param int $validity
      * @param int $maxQueriesPerIPPerHour
      * @param int $maxHitsPerQuery
+     *
      * @return mixed
+     *
      * @deprecated use addApiKey instead
      */
     public function addUserKey($obj, $validity = 0, $maxQueriesPerIPPerHour = 0, $maxHitsPerQuery = 0)
     {
         return $this->addApiKey($obj, $validity, $maxQueriesPerIPPerHour, $maxHitsPerQuery);
     }
-
 
     /**
      * Update an API key associated to this index.
@@ -1232,7 +1244,7 @@ class Index
         return $this->client->request(
             $this->context,
             'PUT',
-            '/1/indexes/'.$this->urlIndexName.'/keys/'.$key,
+            '/1/indexes/' . $this->urlIndexName . '/keys/' . $key,
             array(),
             $params,
             $this->context->writeHostsArray,
@@ -1247,7 +1259,9 @@ class Index
      * @param int $validity
      * @param int $maxQueriesPerIPPerHour
      * @param int $maxHitsPerQuery
+     *
      * @return mixed
+     *
      * @deprecated use updateApiKey instead
      */
     public function updateUserKey($key, $obj, $validity = 0, $maxQueriesPerIPPerHour = 0, $maxHitsPerQuery = 0)
@@ -1267,7 +1281,7 @@ class Index
         return $this->client->request(
             $this->context,
             'POST',
-            '/1/indexes/'.$this->urlIndexName.'/batch',
+            '/1/indexes/' . $this->urlIndexName . '/batch',
             array(),
             $requests,
             $this->context->writeHostsArray,
@@ -1338,7 +1352,7 @@ class Index
         return $this->client->request(
             $this->context,
             'GET',
-            '/1/indexes/'.$this->urlIndexName.'/browse',
+            '/1/indexes/' . $this->urlIndexName . '/browse',
             $params,
             null,
             $this->context->readHostsArray,
@@ -1389,7 +1403,7 @@ class Index
         return $this->client->request(
             $this->context,
             'POST',
-            '/1/indexes/'.$this->urlIndexName.'/synonyms/search',
+            '/1/indexes/' . $this->urlIndexName . '/synonyms/search',
             null,
             $params,
             $this->context->readHostsArray,
@@ -1410,7 +1424,7 @@ class Index
         return $this->client->request(
             $this->context,
             'GET',
-            '/1/indexes/'.$this->urlIndexName.'/synonyms/'.urlencode($objectID),
+            '/1/indexes/' . $this->urlIndexName . '/synonyms/' . urlencode($objectID),
             null,
             null,
             $this->context->readHostsArray,
@@ -1432,7 +1446,7 @@ class Index
         return $this->client->request(
             $this->context,
             'DELETE',
-            '/1/indexes/'.$this->urlIndexName.'/synonyms/'.urlencode($objectID).'?forwardToReplicas='.($forwardToReplicas ? 'true' : 'false'),
+            '/1/indexes/' . $this->urlIndexName . '/synonyms/' . urlencode($objectID) . '?forwardToReplicas=' . ($forwardToReplicas ? 'true' : 'false'),
             null,
             null,
             $this->context->writeHostsArray,
@@ -1453,7 +1467,7 @@ class Index
         return $this->client->request(
             $this->context,
             'POST',
-            '/1/indexes/'.$this->urlIndexName.'/synonyms/clear?forwardToReplicas='.($forwardToReplicas ? 'true' : 'false'),
+            '/1/indexes/' . $this->urlIndexName . '/synonyms/clear?forwardToReplicas=' . ($forwardToReplicas ? 'true' : 'false'),
             null,
             null,
             $this->context->writeHostsArray,
@@ -1476,8 +1490,8 @@ class Index
         return $this->client->request(
             $this->context,
             'POST',
-            '/1/indexes/'.$this->urlIndexName.'/synonyms/batch?replaceExistingSynonyms='.($replaceExistingSynonyms ? 'true' : 'false')
-                .'&forwardToReplicas='.($forwardToReplicas ? 'true' : 'false'),
+            '/1/indexes/' . $this->urlIndexName . '/synonyms/batch?replaceExistingSynonyms=' . ($replaceExistingSynonyms ? 'true' : 'false')
+                . '&forwardToReplicas=' . ($forwardToReplicas ? 'true' : 'false'),
             null,
             $objects,
             $this->context->writeHostsArray,
@@ -1500,7 +1514,7 @@ class Index
         return $this->client->request(
             $this->context,
             'PUT',
-            '/1/indexes/'.$this->urlIndexName.'/synonyms/'.urlencode($objectID).'?forwardToReplicas='.($forwardToReplicas ? 'true' : 'false'),
+            '/1/indexes/' . $this->urlIndexName . '/synonyms/' . urlencode($objectID) . '?forwardToReplicas=' . ($forwardToReplicas ? 'true' : 'false'),
             null,
             $content,
             $this->context->writeHostsArray,
@@ -1516,9 +1530,11 @@ class Index
 
     /**
      * @deprecated Please use searchForFacetValues instead
+     *
      * @param $facetName
      * @param $facetQuery
      * @param array $query
+     *
      * @return mixed
      */
     public function searchFacet($facetName, $facetQuery, $query = array())
@@ -1538,7 +1554,7 @@ class Index
         return $this->client->request(
             $this->context,
             'POST',
-            '/1/indexes/'.$this->urlIndexName.'/rules/search',
+            '/1/indexes/' . $this->urlIndexName . '/rules/search',
             null,
             $params,
             $this->context->readHostsArray,
@@ -1559,7 +1575,7 @@ class Index
         return $this->client->request(
             $this->context,
             'GET',
-            '/1/indexes/'.$this->urlIndexName.'/rules/'.urlencode($objectID),
+            '/1/indexes/' . $this->urlIndexName . '/rules/' . urlencode($objectID),
             null,
             null,
             $this->context->readHostsArray,
@@ -1581,7 +1597,7 @@ class Index
         return $this->client->request(
             $this->context,
             'DELETE',
-            '/1/indexes/'.$this->urlIndexName.'/rules/'.urlencode($objectID).'?forwardToReplicas='.($forwardToReplicas ? 'true' : 'false'),
+            '/1/indexes/' . $this->urlIndexName . '/rules/' . urlencode($objectID) . '?forwardToReplicas=' . ($forwardToReplicas ? 'true' : 'false'),
             null,
             null,
             $this->context->writeHostsArray,
@@ -1602,7 +1618,7 @@ class Index
         return $this->client->request(
             $this->context,
             'POST',
-            '/1/indexes/'.$this->urlIndexName.'/rules/clear?forwardToReplicas='.($forwardToReplicas ? 'true' : 'false'),
+            '/1/indexes/' . $this->urlIndexName . '/rules/clear?forwardToReplicas=' . ($forwardToReplicas ? 'true' : 'false'),
             null,
             null,
             $this->context->writeHostsArray,
@@ -1625,8 +1641,8 @@ class Index
         return $this->client->request(
             $this->context,
             'POST',
-            '/1/indexes/'.$this->urlIndexName.'/rules/batch?clearExistingRules='.($clearExistingRules ? 'true' : 'false')
-            .'&forwardToReplicas='.($forwardToReplicas ? 'true' : 'false'),
+            '/1/indexes/' . $this->urlIndexName . '/rules/batch?clearExistingRules=' . ($clearExistingRules ? 'true' : 'false')
+            . '&forwardToReplicas=' . ($forwardToReplicas ? 'true' : 'false'),
             null,
             $rules,
             $this->context->writeHostsArray,
@@ -1653,7 +1669,7 @@ class Index
         return $this->client->request(
             $this->context,
             'PUT',
-            '/1/indexes/'.$this->urlIndexName.'/rules/'.urlencode($objectID).'?forwardToReplicas='.($forwardToReplicas ? 'true' : 'false'),
+            '/1/indexes/' . $this->urlIndexName . '/rules/' . urlencode($objectID) . '?forwardToReplicas=' . ($forwardToReplicas ? 'true' : 'false'),
             null,
             $content,
             $this->context->writeHostsArray,

@@ -115,7 +115,7 @@ class IndexBrowser implements \Iterator
         do {
             if ($this->position < count($this->answer['hits'])) {
                 $this->hit = $this->answer['hits'][$this->position];
-                $this->position++;
+                ++$this->position;
 
                 return true;
             }

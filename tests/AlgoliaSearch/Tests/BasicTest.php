@@ -8,7 +8,7 @@ use AlgoliaSearch\Index;
 
 class BasicTest extends AlgoliaSearchTestCase
 {
-    /** @var  Client */
+    /** @var Client */
     private $client;
 
     /** @var Index */
@@ -16,7 +16,7 @@ class BasicTest extends AlgoliaSearchTestCase
 
     protected function setUp()
     {
-        $this->client = new Client(getenv('ALGOLIA_APPLICATION_ID'), getenv('ALGOLIA_API_KEY'), null, array('cainfo' => (__DIR__.'/../../../resources/ca-bundle.crt')));
+        $this->client = new Client(getenv('ALGOLIA_APPLICATION_ID'), getenv('ALGOLIA_API_KEY'), null, array('cainfo' => (__DIR__ . '/../../../resources/ca-bundle.crt')));
         $this->client->setConnectTimeout(1);
         $this->index = $this->client->initIndex($this->safe_name('àlgol?à-php'));
         try {

@@ -37,7 +37,7 @@ class FunctionTest extends AlgoliaSearchTestCase
         $start = microtime(true);
         $this->client->listIndexes();
         $timeAfterFirstQuery = microtime(true);
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 10; ++$i) {
             $this->client->listIndexes();
         }
         $afterTenMoreQueries = microtime(true);

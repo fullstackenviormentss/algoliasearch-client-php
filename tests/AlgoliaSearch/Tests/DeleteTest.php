@@ -31,7 +31,7 @@ class DeleteTest extends AlgoliaSearchTestCase
     }
 
     /**
-     *  @expectedException Exception
+     *  @expectedException \Exception
      */
     public function testDeleteObject()
     {

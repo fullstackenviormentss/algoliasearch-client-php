@@ -83,7 +83,7 @@ class Client
             throw new \Exception('AlgoliaSearch requires the JSON PHP extension.');
         }
 
-        $this->caInfoPath = __DIR__.'/../../resources/ca-bundle.crt';
+        $this->caInfoPath = __DIR__ . '/../../resources/ca-bundle.crt';
         foreach ($options as $option => $value) {
             switch ($option) {
                 case self::CAINFO:
@@ -96,12 +96,12 @@ class Client
                     $this->placesEnabled = (bool) $value;
                     break;
                 case self::FAILING_HOSTS_CACHE:
-                    if (! $value instanceof FailingHostsCache) {
+                    if (!$value instanceof FailingHostsCache) {
                         throw new \InvalidArgumentException('failingHostsCache must be an instance of \AlgoliaSearch\FailingHostsCache.');
                     }
                     break;
                 default:
-                    throw new \Exception('Unknown option: '.$option);
+                    throw new \Exception('Unknown option: ' . $option);
             }
         }
 
@@ -304,7 +304,7 @@ class Client
         return $this->request(
             $this->context,
             'DELETE',
-            '/1/indexes/'.urlencode($indexName),
+            '/1/indexes/' . urlencode($indexName),
             null,
             null,
             $this->context->writeHostsArray,
@@ -316,9 +316,9 @@ class Client
     /**
      * Move an existing index.
      *
-     * @param string $srcIndexName the name of index to copy.
+     * @param string $srcIndexName the name of index to copy
      * @param string $dstIndexName the new index name that will contains a copy of srcIndexName (destination will be overwritten
-     *                             if it already exist).
+     *                             if it already exist)
      *
      * @return mixed
      */
@@ -329,7 +329,7 @@ class Client
         return $this->request(
             $this->context,
             'POST',
-            '/1/indexes/'.urlencode($srcIndexName).'/operation',
+            '/1/indexes/' . urlencode($srcIndexName) . '/operation',
             array(),
             $request,
             $this->context->writeHostsArray,
@@ -341,9 +341,9 @@ class Client
     /**
      * Copy an existing index.
      *
-     * @param string $srcIndexName the name of index to copy.
+     * @param string $srcIndexName the name of index to copy
      * @param string $dstIndexName the new index name that will contains a copy of srcIndexName (destination will be overwritten
-     *                             if it already exist).
+     *                             if it already exist)
      *
      * @return mixed
      */
@@ -354,7 +354,7 @@ class Client
         return $this->request(
             $this->context,
             'POST',
-            '/1/indexes/'.urlencode($srcIndexName).'/operation',
+            '/1/indexes/' . urlencode($srcIndexName) . '/operation',
             array(),
             $request,
             $this->context->writeHostsArray,
@@ -366,7 +366,7 @@ class Client
     /**
      * Return last logs entries.
      *
-     * @param int   $offset Specify the first entry to retrieve (0-based, 0 is the most recent log entry).
+     * @param int   $offset specify the first entry to retrieve (0-based, 0 is the most recent log entry)
      * @param int   $length Specify the maximum number of entries to retrieve starting at offset. Maximum allowed value: 1000.
      * @param mixed $type
      *
@@ -387,7 +387,7 @@ class Client
         return $this->request(
             $this->context,
             'GET',
-            '/1/logs?offset='.$offset.'&length='.$length.'&type='.$type,
+            '/1/logs?offset=' . $offset . '&length=' . $length . '&type=' . $type,
             null,
             null,
             $this->context->writeHostsArray,
@@ -437,6 +437,7 @@ class Client
 
     /**
      * @return mixed
+     *
      * @deprecated use listApiKeys instead
      */
     public function listUserKeys()
@@ -456,7 +457,7 @@ class Client
         return $this->request(
             $this->context,
             'GET',
-            '/1/keys/'.$key,
+            '/1/keys/' . $key,
             null,
             null,
             $this->context->readHostsArray,
@@ -467,7 +468,9 @@ class Client
 
     /**
      * @param $key
+     *
      * @return mixed
+     *
      * @deprecated use getApiKey instead
      */
     public function getUserKeyACL($key)
@@ -487,7 +490,7 @@ class Client
         return $this->request(
             $this->context,
             'DELETE',
-            '/1/keys/'.$key,
+            '/1/keys/' . $key,
             null,
             null,
             $this->context->writeHostsArray,
@@ -498,7 +501,9 @@ class Client
 
     /**
      * @param $key
+     *
      * @return mixed
+     *
      * @deprecated use deleteApiKey instead
      */
     public function deleteUserKey($key)
@@ -574,11 +579,13 @@ class Client
 
     /**
      * @param $obj
-     * @param int $validity
-     * @param int $maxQueriesPerIPPerHour
-     * @param int $maxHitsPerQuery
+     * @param int  $validity
+     * @param int  $maxQueriesPerIPPerHour
+     * @param int  $maxHitsPerQuery
      * @param null $indexes
+     *
      * @return mixed
+     *
      * @deprecated use addApiKey instead
      */
     public function addUserKey($obj, $validity = 0, $maxQueriesPerIPPerHour = 0, $maxHitsPerQuery = 0, $indexes = null)
@@ -649,7 +656,7 @@ class Client
         return $this->request(
             $this->context,
             'PUT',
-            '/1/keys/'.$key,
+            '/1/keys/' . $key,
             array(),
             $params,
             $this->context->writeHostsArray,
@@ -661,11 +668,13 @@ class Client
     /**
      * @param $key
      * @param $obj
-     * @param int $validity
-     * @param int $maxQueriesPerIPPerHour
-     * @param int $maxHitsPerQuery
+     * @param int  $validity
+     * @param int  $maxQueriesPerIPPerHour
+     * @param int  $maxHitsPerQuery
      * @param null $indexes
+     *
      * @return mixed
+     *
      * @deprecated use updateApiKey instead
      */
     public function updateUserKey(
@@ -722,7 +731,7 @@ class Client
                 $tmp = array();
                 foreach ($query as $tag) {
                     if (is_array($tag)) {
-                        array_push($tmp, '('.implode(',', $tag).')');
+                        array_push($tmp, '(' . implode(',', $tag) . ')');
                     } else {
                         array_push($tmp, $tag);
                     }
@@ -747,11 +756,11 @@ class Client
                 // url encoded query
                 $urlEncodedQuery = $query;
                 if ($userToken != null && strlen($userToken) > 0) {
-                    $urlEncodedQuery = $urlEncodedQuery.'&userToken='.urlencode($userToken);
+                    $urlEncodedQuery = $urlEncodedQuery . '&userToken=' . urlencode($userToken);
                 }
             }
         }
-        $content = hash_hmac('sha256', $urlEncodedQuery, $privateApiKey).$urlEncodedQuery;
+        $content = hash_hmac('sha256', $urlEncodedQuery, $privateApiKey) . $urlEncodedQuery;
 
         return base64_encode($content);
     }
@@ -819,7 +828,7 @@ class Client
                 }
             }
         }
-        throw new AlgoliaConnectionException('Hosts unreachable: '.implode(',', $exceptions));
+        throw new AlgoliaConnectionException('Hosts unreachable: ' . implode(',', $exceptions));
     }
 
     /**
@@ -848,9 +857,9 @@ class Client
         $readTimeout
     ) {
         if (strpos($host, 'http') === 0) {
-            $url = $host.$path;
+            $url = $host . $path;
         } else {
-            $url = 'https://'.$host.$path;
+            $url = 'https://' . $host . $path;
         }
 
         if ($params != null && count($params) > 0) {
@@ -862,7 +871,7 @@ class Client
                     $params2[$key] = $val;
                 }
             }
-            $url .= '?'.http_build_query($params2);
+            $url .= '?' . http_build_query($params2);
         }
 
         // initialize curl library
@@ -901,7 +910,7 @@ class Client
 
         $curlHeaders = array();
         foreach ($headers as $key => $value) {
-            $curlHeaders[] = $key.': '.$value;
+            $curlHeaders[] = $key . ': ' . $value;
         }
 
         curl_setopt($curlHandle, CURLOPT_HTTPHEADER, $curlHeaders);
@@ -988,9 +997,9 @@ class Client
         curl_close($curlHandle);
 
         if (intval($http_status / 100) == 4) {
-            throw new AlgoliaException(isset($answer['message']) ? $answer['message'] : $http_status.' error', $http_status);
+            throw new AlgoliaException(isset($answer['message']) ? $answer['message'] : $http_status . ' error', $http_status);
         } elseif (intval($http_status / 100) != 2) {
-            throw new \Exception($http_status.': '.$response, $http_status);
+            throw new \Exception($http_status . ': ' . $response, $http_status);
         }
 
         return $answer;

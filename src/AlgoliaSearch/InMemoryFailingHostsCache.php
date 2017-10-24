@@ -4,7 +4,6 @@ namespace AlgoliaSearch;
 
 class InMemoryFailingHostsCache implements FailingHostsCache
 {
-
     /**
      * @var array
      */
@@ -21,24 +20,23 @@ class InMemoryFailingHostsCache implements FailingHostsCache
     private $ttl;
 
     /**
-     * @param int|null $ttl The time to live of the cache in seconds.
+     * @param int|null $ttl the time to live of the cache in seconds
      */
     public function __construct($ttl = null)
     {
         if ($ttl === null) {
             $ttl = 60 * 5; // 5 minutes
         }
-        
+
         $this->ttl = (int) $ttl;
     }
-
 
     /**
      * @param string $host
      */
     public function addFailingHost($host)
     {
-        if (! in_array($host, self::$failingHosts)) {
+        if (!in_array($host, self::$failingHosts)) {
             // Keep a local cache of failed hosts in case the file based strategy doesn't work out.
             self::$failingHosts[] = $host;
 
@@ -67,7 +65,7 @@ class InMemoryFailingHostsCache implements FailingHostsCache
 
         return self::$failingHosts;
     }
-    
+
     public function flushFailingHostsCache()
     {
         self::$failingHosts = array();

@@ -34,7 +34,7 @@ class BrowseTest extends AlgoliaSearchTestCase
     {
         $objects = array();
 
-        for ($i = 0; $i < 1500; $i++) {
+        for ($i = 0; $i < 1500; ++$i) {
             $objects[] = array('objectID' => $i, 'i' => $i);
         }
 
@@ -44,7 +44,7 @@ class BrowseTest extends AlgoliaSearchTestCase
         $i = 0;
 
         foreach ($this->index->browse('') as $key => $value) {
-            $i++;
+            ++$i;
         }
 
         $this->assertEquals(1500, $i);
@@ -52,7 +52,7 @@ class BrowseTest extends AlgoliaSearchTestCase
         $i = 0;
 
         foreach ($this->index->browse('', array('numericFilters' => 'i<42')) as $key => $value) {
-            $i++;
+            ++$i;
         }
 
         $this->assertEquals(42, $i);

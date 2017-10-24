@@ -94,7 +94,6 @@ class RulesTest extends AlgoliaSearchTestCase
         $response = $this->index->clearRules();
         $this->index->waitTask($response['taskID']);
 
-
         $rules = $this->index->searchRules();
         $this->assertEquals(0, $rules['nbHits']);
     }
@@ -124,12 +123,10 @@ class RulesTest extends AlgoliaSearchTestCase
         $this->assertEquals(array($rule4, $rule3), $rules['hits']);
     }
 
-
-
     private function getRuleStub($objectID = 'my-rule')
     {
         return $rule = array(
-            'objectID' => $objectID,
+            'objectID'  => $objectID,
             'condition' => array(
                 'pattern'   => 'some text',
                 'anchoring' => 'is'

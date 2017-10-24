@@ -2,7 +2,6 @@
 
 namespace AlgoliaSearch;
 
-
 class SynonymBrowser implements \Iterator
 {
     /**
@@ -21,15 +20,16 @@ class SynonymBrowser implements \Iterator
     private $key = 0;
 
     /**
-     * @var array Response from the last Algolia API call,
-     * this contains the results for the current page.
+     * @var array response from the last Algolia API call,
+     *            this contains the results for the current page
      */
     private $response;
 
     /**
      * SynonymBrowser constructor.
+     *
      * @param Index $index
-     * @param int $hitsPerPage
+     * @param int   $hitsPerPage
      */
     public function __construct(Index $index, $hitsPerPage = 1000)
     {
@@ -42,7 +42,8 @@ class SynonymBrowser implements \Iterator
     }
 
     /**
-     * Return the current element
+     * Return the current element.
+     *
      * @return array
      */
     public function current()
@@ -54,21 +55,21 @@ class SynonymBrowser implements \Iterator
     }
 
     /**
-     * Move forward to next element
-     * @return void Any returned value is ignored.
+     * Move forward to next element.
      */
     public function next()
     {
         $previousPage = $this->getCurrentPage();
-        $this->key++;
-        if($this->getCurrentPage() !== $previousPage) {
+        ++$this->key;
+        if ($this->getCurrentPage() !== $previousPage) {
             // Discard the response if the page has changed.
             $this->response = null;
         }
     }
 
     /**
-     * Return the key of the current element
+     * Return the key of the current element.
+     *
      * @return int
      */
     public function key()
@@ -81,8 +82,8 @@ class SynonymBrowser implements \Iterator
      * is not valid, we call Algolia' API to load more results
      * until it's the last page.
      *
-     * @return boolean The return value will be casted to boolean and then evaluated.
-     * Returns true on success or false on failure.
+     * @return bool The return value will be casted to boolean and then evaluated.
+     *              Returns true on success or false on failure.
      */
     public function valid()
     {
@@ -92,8 +93,7 @@ class SynonymBrowser implements \Iterator
     }
 
     /**
-     * Rewind the Iterator to the first element
-     * @return void Any returned value is ignored.
+     * Rewind the Iterator to the first element.
      */
     public function rewind()
     {
@@ -103,9 +103,10 @@ class SynonymBrowser implements \Iterator
 
     /**
      * The export method is using search internally, this method
-     * is used to clean the results, like remove the highlight
+     * is used to clean the results, like remove the highlight.
      *
      * @param array $hit
+     *
      * @return array formatted synonym array
      */
     private function formatHit(array $hit)
@@ -119,14 +120,15 @@ class SynonymBrowser implements \Iterator
      * ensureResponseExists is always called prior
      * to trying to access the response property.
      */
-    private function ensureResponseExists() {
+    private function ensureResponseExists()
+    {
         if ($this->response === null) {
             $this->fetchCurrentPageResults();
         }
     }
 
     /**
-     * Call Algolia' API to get new result batch
+     * Call Algolia' API to get new result batch.
      */
     private function fetchCurrentPageResults()
     {

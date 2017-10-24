@@ -9,8 +9,8 @@ class AccessTest extends AlgoliaSearchTestCase
     public function testHTTPAccess()
     {
         $client = new Client(getenv('ALGOLIA_APPLICATION_ID'), getenv('ALGOLIA_API_KEY'), array(
-            'http://'.getenv('ALGOLIA_APPLICATION_ID').'-dsn.algolia.net',
-            'http://'.getenv('ALGOLIA_APPLICATION_ID').'-1.algolianet.com'
+            'http://' . getenv('ALGOLIA_APPLICATION_ID') . '-dsn.algolia.net',
+            'http://' . getenv('ALGOLIA_APPLICATION_ID') . '-1.algolianet.com'
         ));
 
         $client->isAlive();
@@ -19,8 +19,8 @@ class AccessTest extends AlgoliaSearchTestCase
     public function testHTTPSAccess()
     {
         $client = new Client(getenv('ALGOLIA_APPLICATION_ID'), getenv('ALGOLIA_API_KEY'), array(
-            'https://'.getenv('ALGOLIA_APPLICATION_ID').'-dsn.algolia.net',
-            'https://'.getenv('ALGOLIA_APPLICATION_ID').'-1.algolianet.com'
+            'https://' . getenv('ALGOLIA_APPLICATION_ID') . '-dsn.algolia.net',
+            'https://' . getenv('ALGOLIA_APPLICATION_ID') . '-1.algolianet.com'
         ));
 
         $client->isAlive();
@@ -43,9 +43,9 @@ class AccessTest extends AlgoliaSearchTestCase
             getenv('ALGOLIA_APPLICATION_ID'),
             getenv('ALGOLIA_API_KEY'),
             array(
-                'APP_ID_1'.'.algolia.biz', // .biz will always fail to resolve
-                getenv('ALGOLIA_APPLICATION_ID').'.algolia.biz',
-                getenv('ALGOLIA_APPLICATION_ID').'.algolia.net'
+                'APP_ID_1' . '.algolia.biz', // .biz will always fail to resolve
+                getenv('ALGOLIA_APPLICATION_ID') . '.algolia.biz',
+                getenv('ALGOLIA_APPLICATION_ID') . '.algolia.net'
             )
         );
 
@@ -55,9 +55,9 @@ class AccessTest extends AlgoliaSearchTestCase
             getenv('ALGOLIA_APPLICATION_ID'),
             getenv('ALGOLIA_API_KEY'),
             array(
-                getenv('ALGOLIA_APPLICATION_ID').'.algolia.biz',
-                'APP_ID_1'.'.algolia.biz', // .biz will always fail to resolve
-                getenv('ALGOLIA_APPLICATION_ID').'.algolia.net'
+                getenv('ALGOLIA_APPLICATION_ID') . '.algolia.biz',
+                'APP_ID_1' . '.algolia.biz', // .biz will always fail to resolve
+                getenv('ALGOLIA_APPLICATION_ID') . '.algolia.net'
             )
         );
 
@@ -67,16 +67,16 @@ class AccessTest extends AlgoliaSearchTestCase
             getenv('ALGOLIA_APPLICATION_ID'),
             getenv('ALGOLIA_API_KEY'),
             array(
-                'APP_ID_1'.'.algolia.biz', // .biz will always fail to resolve
-                getenv('ALGOLIA_APPLICATION_ID').'.algolia.biz',
-                getenv('ALGOLIA_APPLICATION_ID').'.algolia.net'
+                'APP_ID_1' . '.algolia.biz', // .biz will always fail to resolve
+                getenv('ALGOLIA_APPLICATION_ID') . '.algolia.biz',
+                getenv('ALGOLIA_APPLICATION_ID') . '.algolia.net'
             )
         );
 
         $this->assertEquals(array(
-            getenv('ALGOLIA_APPLICATION_ID').'.algolia.net',
-            'APP_ID_1'.'.algolia.biz', // .biz will always fail to resolve
-            getenv('ALGOLIA_APPLICATION_ID').'.algolia.biz'
+            getenv('ALGOLIA_APPLICATION_ID') . '.algolia.net',
+            'APP_ID_1' . '.algolia.biz', // .biz will always fail to resolve
+            getenv('ALGOLIA_APPLICATION_ID') . '.algolia.biz'
         ), $client3->getContext()->readHostsArray);
     }
 
@@ -88,13 +88,13 @@ class AccessTest extends AlgoliaSearchTestCase
 
         $start = microtime(true);
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $client = new Client(
                 getenv('ALGOLIA_APPLICATION_ID'),
                 getenv('ALGOLIA_API_KEY'),
                 array(
-                    getenv('ALGOLIA_APPLICATION_ID').'.algolia.biz', // .biz will always fail to resolve
-                    getenv('ALGOLIA_APPLICATION_ID').'.algolia.net'
+                    getenv('ALGOLIA_APPLICATION_ID') . '.algolia.biz', // .biz will always fail to resolve
+                    getenv('ALGOLIA_APPLICATION_ID') . '.algolia.net'
                 )
             );
             $client->isAlive();

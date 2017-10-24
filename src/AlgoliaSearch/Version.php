@@ -39,12 +39,12 @@ class Version
     // Method untouched to keep backward compatibility
     public static function get()
     {
-        return self::VALUE.static::$custom_value;
+        return self::VALUE . static::$custom_value;
     }
 
     public static function getUserAgent()
     {
-        $userAgent = self::$prefixUserAgentSegments.'Algolia for PHP ('.self::VALUE.')'.static::$suffixUserAgentSegments;
+        $userAgent = self::$prefixUserAgentSegments . 'Algolia for PHP (' . self::VALUE . ')' . static::$suffixUserAgentSegments;
 
         // Keep backward compatibility
         $userAgent .= static::$custom_value;
@@ -54,18 +54,18 @@ class Version
 
     public static function addPrefixUserAgentSegment($segment, $version)
     {
-        $prefix = $segment.' ('.$version.'); ';
+        $prefix = $segment . ' (' . $version . '); ';
 
-        if (false === mb_strpos(self::getUserAgent(), $prefix)) {
+        if (mb_strpos(self::getUserAgent(), $prefix) === false) {
             self::$prefixUserAgentSegments = $prefix . self::$prefixUserAgentSegments;
         }
     }
 
     public static function addSuffixUserAgentSegment($segment, $version)
     {
-        $suffix = '; '.$segment.' ('.$version.')';
+        $suffix = '; ' . $segment . ' (' . $version . ')';
 
-        if (false === mb_strpos(self::getUserAgent(), $suffix)) {
+        if (mb_strpos(self::getUserAgent(), $suffix) === false) {
             self::$suffixUserAgentSegments .= $suffix;
         }
     }

@@ -26,40 +26,40 @@ class DisjunctiveFacetingTest extends AlgoliaSearchTestCase
 
         $task = $this->index->addObjects(array(
             array(
-                'name' => 'red shirt 1',
+                'name'     => 'red shirt 1',
                 'category' => 'shirt',
-                'color' => 'red',
-                'brand' => 'adidas'
+                'color'    => 'red',
+                'brand'    => 'adidas'
             ),
             array(
-                'name' => 'red shirt 2',
+                'name'     => 'red shirt 2',
                 'category' => 'shirt',
-                'color' => 'red',
-                'brand' => 'nike'
+                'color'    => 'red',
+                'brand'    => 'nike'
             ),
             array(
-                'name' => 'blue pants 1',
+                'name'     => 'blue pants 1',
                 'category' => 'pants',
-                'color' => 'blue',
-                'brand' => 'puma'
+                'color'    => 'blue',
+                'brand'    => 'puma'
             ),
             array(
-                'name' => 'blue shoes 1',
+                'name'     => 'blue shoes 1',
                 'category' => 'shoes',
-                'color' => 'blue',
-                'brand' => 'puma'
+                'color'    => 'blue',
+                'brand'    => 'puma'
             ),
             array(
-                'name' => 'blue shoes 2',
+                'name'     => 'blue shoes 2',
                 'category' => 'shoes',
-                'color' => 'blue',
-                'brand' => 'adidas'
+                'color'    => 'blue',
+                'brand'    => 'adidas'
             ),
             array(
-                'name' => 'green shoes 1',
+                'name'     => 'green shoes 1',
                 'category' => 'shoes',
-                'color' => 'green',
-                'brand' => 'adidas'
+                'color'    => 'green',
+                'brand'    => 'adidas'
             )
         ));
 

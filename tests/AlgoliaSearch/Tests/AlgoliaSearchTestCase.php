@@ -12,7 +12,7 @@ class AlgoliaSearchTestCase extends \PHPUnit_Framework_TestCase
         $s = explode('.', getenv('TRAVIS_JOB_NUMBER'));
         $id = end($s);
 
-        return $name.'_travis-'.$id;
+        return $name . '_travis-' . $id;
     }
 
     public function containsValue($array, $attr, $value)

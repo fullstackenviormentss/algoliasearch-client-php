@@ -156,12 +156,12 @@ class ClientContext
         }
 
         $hosts = array(
-            $this->applicationID.'-1.algolianet.com',
-            $this->applicationID.'-2.algolianet.com',
-            $this->applicationID.'-3.algolianet.com',
+            $this->applicationID . '-1.algolianet.com',
+            $this->applicationID . '-2.algolianet.com',
+            $this->applicationID . '-3.algolianet.com',
         );
         shuffle($hosts);
-        array_unshift($hosts, $this->applicationID.'-dsn.algolia.net');
+        array_unshift($hosts, $this->applicationID . '-dsn.algolia.net');
 
         return $hosts;
     }
@@ -172,12 +172,12 @@ class ClientContext
     private function getDefaultWriteHosts()
     {
         $hosts = array(
-            $this->applicationID.'-1.algolianet.com',
-            $this->applicationID.'-2.algolianet.com',
-            $this->applicationID.'-3.algolianet.com',
+            $this->applicationID . '-1.algolianet.com',
+            $this->applicationID . '-2.algolianet.com',
+            $this->applicationID . '-3.algolianet.com',
         );
         shuffle($hosts);
-        array_unshift($hosts, $this->applicationID.'.algolia.net');
+        array_unshift($hosts, $this->applicationID . '.algolia.net');
 
         return $hosts;
     }
@@ -277,6 +277,7 @@ class ClientContext
     {
         return $this->failingHostsCache;
     }
+
     /**
      * This method is called to pass on failing hosts.
      * If the host is first either in the failingHosts array, we
@@ -289,13 +290,13 @@ class ClientContext
         $failingHosts = $this->failingHostsCache->getFailingHosts();
         $i = 0;
         while ($i <= count($this->readHostsArray) && in_array($this->readHostsArray[0], $failingHosts)) {
-            $i++;
+            ++$i;
             $this->readHostsArray[] = array_shift($this->readHostsArray);
         }
 
         $i = 0;
         while ($i <= count($this->writeHostsArray) && in_array($this->writeHostsArray[0], $failingHosts)) {
-            $i++;
+            ++$i;
             $this->writeHostsArray[] = array_shift($this->writeHostsArray);
         }
     }
