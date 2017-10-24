@@ -8,6 +8,7 @@ Your help is essential for keeping it great.
 0. [Fork](https://github.com/algolia/algoliasearch-client-php/fork) and clone the repository
 0. Configure and install the dependencies: `composer install`
 0. Make sure the tests pass on your machine via the section [Running the tests](#running-the-tests)
+0. Run [php-cs-fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer#installation) `php-cs-fixer fix`
 0. Create a new branch: `git checkout -b my-branch-name`
 0. Make your change, add tests, and make sure the tests still pass
 0. Push to your fork and [submit a pull request](https://github.com/algolia/algoliasearch-client-php/compare)
