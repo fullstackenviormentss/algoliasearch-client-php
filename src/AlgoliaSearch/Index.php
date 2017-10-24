@@ -27,7 +27,6 @@
 
 namespace AlgoliaSearch;
 
-
 use AlgoliaSearch\Iterators\RuleIterator;
 use AlgoliaSearch\Iterators\SynonymIterator;
 

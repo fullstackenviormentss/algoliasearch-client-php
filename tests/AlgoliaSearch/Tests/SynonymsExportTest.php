@@ -58,7 +58,6 @@ class SynonymsExportTest extends AlgoliaSearchTestCase
         );
         $this->index->waitTask($res['taskID'], 0.1);
 
-
         $synonym = $this->index->initSynonymIterator()->current();
         $this->assertEquals(array(
             'objectID' => 'city',
@@ -90,7 +89,6 @@ class SynonymsExportTest extends AlgoliaSearchTestCase
     {
         $res = $this->index->batchSynonyms($this->getFakeSynonyms());
         $this->index->waitTask($res['taskID'], 0.1);
-
 
         $iterator = $this->index->initSynonymIterator();
 

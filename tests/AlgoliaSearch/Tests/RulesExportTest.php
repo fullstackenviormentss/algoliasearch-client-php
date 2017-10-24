@@ -2,7 +2,6 @@
 
 namespace AlgoliaSearch\Tests;
 
-
 use AlgoliaSearch\AlgoliaException;
 use AlgoliaSearch\Client;
 use AlgoliaSearch\Index;
@@ -91,7 +90,6 @@ class RulesExportTest extends AlgoliaSearchTestCase
         ));
         $this->index->waitTask($res['taskID'], 0.1);
 
-
         $browser = $this->index->initRuleIterator();
 
         $rules = array();
@@ -108,7 +106,7 @@ class RulesExportTest extends AlgoliaSearchTestCase
     private function getRuleStub($objectID = 'my-rule')
     {
         return $rule = array(
-            'objectID' => $objectID,
+            'objectID'  => $objectID,
             'condition' => array(
                 'pattern'   => 'some text',
                 'anchoring' => 'is'

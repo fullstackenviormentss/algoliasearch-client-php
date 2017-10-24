@@ -107,7 +107,8 @@ abstract class AlgoliaIterator implements \Iterator
      * ensureResponseExists is always called prior
      * to trying to access the response property.
      */
-    protected function ensureResponseExists() {
+    protected function ensureResponseExists()
+    {
         if ($this->response === null) {
             $this->fetchCurrentPageResults();
         }
@@ -136,15 +137,16 @@ abstract class AlgoliaIterator implements \Iterator
     }
 
     /**
-     * Call Algolia' API to get new result batch
+     * Call Algolia' API to get new result batch.
      */
     abstract protected function fetchCurrentPageResults();
 
     /**
      * The export method might be is using search internally, this method
-     * is used to clean the results, like remove the highlight
+     * is used to clean the results, like remove the highlight.
      *
      * @param array $hit
+     *
      * @return array formatted synonym array
      */
     abstract protected function formatHit(array $hit);
